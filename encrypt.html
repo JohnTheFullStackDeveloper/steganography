@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Steganography (LSB) – HTML/CSS/JS</title>
+  <style>
+    /* ===== Base ===== */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 98%;
+  margin: 0;
+  font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #e5e7eb;
+  background: radial-gradient(1200px 400px at 70% -10%, #1f2937 0%, #0b0f14 40%, #0b0f14 100%);
+}
+
+/* ===== Layout ===== */
+.wrap {
+  max-width: 1100px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  padding: 0 16px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: clamp(20px, 3vw, 28px);
+  margin: 6px 0;
+}
+canvas{
+  display: block;
+}
+.sub {
+  color: #9ca3af;
+}
+
+/* ===== Card ===== */
+
+/* ===== Inputs & File ===== */
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #9ca3af;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.filebox {
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  padding: 14px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.filebox:hover {
+  border-color: #60a5fa;
+}
+
+textarea,
+input[type="text"],
+.number {
+  width: 100%;
+  background: #0f1622;
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+  outline: none;
+}
+
+textarea:focus,
+input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.35);
+}
+
+/* ===== Buttons ===== */
+button {
+  border: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  background: #172133;
+  color: #e5e7eb;
+}
+
+button.primary {
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+}
+
+button.good {
+  background: linear-gradient(180deg, #10b981, #059669);
+}
+
+button.warn {
+  background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ===== Grid Helpers ===== */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+
+@media (max-width: 640px) {
+  .row, .row3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Misc ===== */
+@media (max-width: 980px) {
+  .preview {
+    grid-template-columns: 1fr;
+  }
+}
+
+.muted {
+  color: #9ca3af;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #9ca3af;
+}
+
+.tips {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 12px 0;
+}
+
+.footer {
+  color: #9ca3af;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Steganography</h1>
+        <div class="sub">Hide text inside images.</div>
+      </div>
+    </header>
+
+    <div class="">
+        <h3>1) Choose Image & Message</h3>
+        <div class="body">
+          <label>Upload Image</label>
+          <label for="file" class="filebox" id="drop">
+            <div>
+              <strong id="fileName">Click to select Image</strong>
+              <div class="tips">or drag & drop here</div>
+            </div>
+          </label>
+          <input id="file" type="file" accept="image/png" />
+
+
+          <label>Secret message To Hide</label>
+          <textarea id="message" rows="5" placeholder="Type your secret message here..."></textarea>
+
+          <div class="row" style="margin-top:12px">
+            <button id="btnEncode" class="primary">Encode →</button>
+            <button id="btnDownload" class="good">Download PNG</button>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div style="margin-top: 30px;"></div>
+  <canvas id="canvas"></canvas>
+  <script src="encrypt.js"></script>
+</body>
+</html>
