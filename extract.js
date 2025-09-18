@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d');
 const inputFile = document.getElementById('file');
 const buttonDecode = document.getElementById('btnDecode');
 const messageInput = document.getElementById('message');
+const passwordInput = document.getElementById('pass');
 
 let selectedFile = null;
 inputFile.addEventListener('change', (event) => {
@@ -24,7 +25,17 @@ inputFile.addEventListener('change', (event) => {
     }
     reader.readAsDataURL(file)
 })
-
+function Decrypt(cipher, password) {
+    const chars = [...cipher];
+    const pwdChars = [...password];
+    let result = '';
+    for (let i = 0; i < chars.length; i++) {
+        const code = chars[i].codePointAt(0);
+        const shift = pwdChars[i % pwdChars.length].codePointAt(0);
+        result += String.fromCodePoint((code - shift + 0x10FFFF) % 0x10FFFF);
+    }
+    return result;
+}
 function convertNumberToBinary(number) {
     return number.toString(2).padStart(24, '0'); // 24-bit binary
 }
@@ -62,6 +73,6 @@ buttonDecode.addEventListener('click', () => {
             bitBuffer = "";
         }
     }
-
+    fullString = Decrypt(fullString, passwordInput.value.trim() || 'pass');
     messageInput.value = fullString;
 });

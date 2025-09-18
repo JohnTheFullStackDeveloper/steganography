@@ -4,6 +4,7 @@ const inputFile = document.getElementById('file');
 const encodeButton = document.getElementById('btnEncode');
 const downloadButton = document.getElementById('btnDownload');
 const messageInput = document.getElementById('message');
+const passwordInput = document.getElementById('pass');
 var selectedFile = null;
 downloadButton.style.display = 'none';
 inputFile.addEventListener('change', (event) => {
@@ -27,6 +28,32 @@ inputFile.addEventListener('change', (event) => {
     reader.readAsDataURL(file)
 
 })
+function textToBytes(str) {
+    return new TextEncoder().encode(str); // UTF-8 bytes
+}
+
+function bytesToText(bytes) {
+    return new TextDecoder().decode(Uint8Array.from(bytes));
+}
+
+// Encrypt function
+function Encrypt(text, password) {
+    const chars = [...text];       // ensures emojis are treated as single characters
+    const pwdChars = [...password];
+    let result = '';
+
+    for (let i = 0; i < chars.length; i++) {
+        const msgCode = chars[i].codePointAt(0);
+        const shift = pwdChars[i % pwdChars.length].codePointAt(0);
+        // Simple shift with wraparound (max 0x10FFFF)
+        result += String.fromCodePoint((msgCode + shift) % 0x10FFFF);
+    }
+
+    return result;
+}
+
+// Decrypt function
+
 function convertNumberToBinary(number) {
     return number.toString(2).padStart(24, '0');
 }
@@ -56,7 +83,8 @@ encodeButton.addEventListener('click', () => {
     }
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imgData.data;
-    const hideMessage = messageInput.value.trim();
+    let hideMessage = messageInput.value.trim();
+    hideMessage = Encrypt(hideMessage, passwordInput.value.trim() || 'pass');
     let binaryDataToHide = [...hideMessage];
     binaryDataToHide = binaryDataToHide.map(char => convertCharToNumber(char))
     console.log(binaryDataToHide);
