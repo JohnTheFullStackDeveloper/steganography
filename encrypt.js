@@ -34,10 +34,10 @@ function convertBinaryToNumber(binary) {
     return parseInt(binary, 2);
 }
 function convertCharToNumber(char) {
-    return char.charCodeAt();
+    return char.codePointAt(0);
 }
 function convertNumberToChar(number) {
-    return String.fromCharCode(number);
+    return String.fromCodePoint(number);
 }
 function addLsb(binaryOfPixel, binaryOfNumber) {
     binaryOfPixel = binaryOfPixel.split('')
@@ -79,3 +79,4 @@ downloadButton.addEventListener('click', () => {
     link.href = canvas.toDataURL("image/png");
     link.click();
 })
+
