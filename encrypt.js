@@ -28,7 +28,7 @@ inputFile.addEventListener('change', (event) => {
 
 })
 function convertNumberToBinary(number) {
-    return number.toString(2).padStart(8, '0');
+    return number.toString(2).padStart(24, '0');
 }
 function convertBinaryToNumber(binary) {
     return parseInt(binary, 2);
@@ -41,7 +41,7 @@ function convertNumberToChar(number) {
 }
 function addLsb(binaryOfPixel, binaryOfNumber) {
     binaryOfPixel = binaryOfPixel.split('')
-    binaryOfPixel[7] = binaryOfNumber
+    binaryOfPixel[23] = binaryOfNumber
     binaryOfPixel = binaryOfPixel.join('')
     return binaryOfPixel
 }
@@ -57,9 +57,11 @@ encodeButton.addEventListener('click', () => {
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imgData.data;
     const hideMessage = messageInput.value.trim();
-    let binaryDataToHide = hideMessage.split('');
+    let binaryDataToHide = [...hideMessage];
     binaryDataToHide = binaryDataToHide.map(char => convertCharToNumber(char))
+    console.log(binaryDataToHide);
     binaryDataToHide = binaryDataToHide.map(number => convertNumberToBinary(number))
+    console.log(binaryDataToHide);
     binaryDataToHide = binaryDataToHide.join('')
     console.log(binaryDataToHide)
     let i;
@@ -67,7 +69,7 @@ encodeButton.addEventListener('click', () => {
         const binaryOfData = convertNumberToBinary(data[i])
         data[i] =convertBinaryToNumber(addLsb(binaryOfData, binaryDataToHide[i]))
     }
-    for(let j=0;j<8;j++){
+    for(let j=0;j<24;j++){
         data[j+i] = convertBinaryToNumber(addLsb(convertNumberToBinary(data[j+i]),0))
     }
     ctx.putImageData(imgData,0,0)

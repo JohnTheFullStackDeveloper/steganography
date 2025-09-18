@@ -84,7 +84,15 @@ input[type="text"],
   padding: 12px;
   outline: none;
 }
-
+input{
+  width: 100%;
+  background: #0f1622;
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+  outline: none;
+}
 textarea:focus,
 input:focus {
   border-color: #60a5fa;
@@ -184,7 +192,7 @@ button:disabled {
       </div>
     </header>
 
-    <div class="">
+    <div>
         <h3>1) Choose Image & Message</h3>
         <div class="body">
           <label>Upload Image</label>
@@ -196,10 +204,10 @@ button:disabled {
           </label>
           <input id="file" type="file" accept="image/png" />
 
-
           <label>Secret message To Hide</label>
           <textarea id="message" rows="5" placeholder="Type your secret message here..."></textarea>
-
+          <label>Secret Password</label>
+          <input id="pass" placeholder="Type your secret Password here...">
           <div class="row" style="margin-top:12px">
             <button id="btnEncode" class="primary">Encode →</button>
             <button id="btnDownload" class="good">Download PNG</button>
