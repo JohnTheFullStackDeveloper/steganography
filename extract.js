@@ -31,10 +31,10 @@ function convertBinaryToNumber(binary) {
     return parseInt(binary, 2);
 }
 function convertCharToNumber(char) {
-    return char.charCodeAt();
+    return char.codePointAt(0);
 }
 function convertNumberToChar(number) {
-    return String.fromCharCode(number);
+    return String.fromCodePoint(number);
 }
 buttonDecode.addEventListener('click', () => {
     if(selectedFile === null){
@@ -64,4 +64,5 @@ buttonDecode.addEventListener('click', () => {
         }
     }
     messageInput.value = fullString.split(' ').map(bin => convertBinaryToNumber(bin)).map(num => convertNumberToChar(num)).join('')
+
 })
